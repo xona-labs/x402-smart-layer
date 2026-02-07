@@ -1,0 +1,63 @@
+{
+  "name": "@xona-labs/x402-smart-layer",
+  "version": "1.0.0",
+  "description": "Smart validation layer middleware for x402 endpoints using AI-powered rule validation",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "ts-node --esm examples/x402-integration.ts",
+    "example:x402": "ts-node --esm examples/x402-integration.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xona-labs/x402-smart-layer.git"
+  },
+  "keywords": [
+    "x402",
+    "middleware",
+    "validation",
+    "ai",
+    "express",
+    "smart-layer"
+  ],
+  "author": "xona-labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xona-labs/x402-smart-layer/issues"
+  },
+  "homepage": "https://github.com/xona-labs/x402-smart-layer#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "express": "^4.18.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "express": "^4.18.0",
+    "@x402/express": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
