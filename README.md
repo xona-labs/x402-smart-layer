@@ -8,7 +8,6 @@
 ## ✨ Features
 
 - 🤖 **AI-Powered Validation**: Uses Gemini AI to intelligently validate requests against flexible rules
-- 🔒 **Payment-Aware**: Only processes requests with x402 payment headers (`X-PAYMENT` or `PAYMENT-SIGNATURE`)
 - 🎯 **Route-Specific**: Configure validation rules per endpoint
 - 🚀 **Zero Config**: Works out of the box with sensible defaults
 - 📦 **TypeScript**: Full TypeScript support with type definitions
