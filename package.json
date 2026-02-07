@@ -1,6 +1,6 @@
 {
   "name": "@xona-labs/x402-smart-layer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Smart validation layer middleware for x402 endpoints using AI-powered rule validation",
   "type": "module",
   "main": "dist/index.js",
