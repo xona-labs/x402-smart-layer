@@ -33,6 +33,7 @@ app.use(express.json());
 
 // Configure smart layer middleware
 const smartLayer = createSmartLayer({
+  debug: true, // Enable debug logging (optional)
   endpoints: {
     '/image/nano-banana': {
       expectedRequest: {
@@ -71,12 +72,13 @@ Creates Express middleware for smart validation.
 - `config` (`SmartLayerConfig`):
   - `endpoints` (Record<string, EndpointConfig>): Map of route paths to their configurations
     - `expectedRequest` (Record<string, any>): Expected request structure
+  - `debug` (boolean, optional): Enable debug logging. When `true`, logs detailed information about the validation process including route checks, payload validation, and API calls. Default: `false`
 
 #### Returns
 
 Express middleware function that:
 - Only processes requests to configured endpoints
-- Only validates requests with `X-PAYMENT` or `PAYMENT-SIGNATURE` headers
+- Validates requests when a request body is present (runs before payment processing)
 - Returns 400 if validation fails
 - Attaches validation result to `req.smartLayerValidation` on success
 
@@ -102,7 +104,7 @@ npx ts-node --esm examples/x402-integration.ts
 ## 🔍 How It Works
 
 1. **Route Matching**: Middleware checks if the incoming request path matches a configured endpoint
-2. **Payment Detection**: Only processes requests with `X-PAYMENT` or `PAYMENT-SIGNATURE` headers
+2. **Request Body Detection**: Validates requests that have a request body present
 3. **Rule Generation**: Generates validation rules from the `expectedRequest` structure
 4. **AI Validation**: Calls the smart layer API (powered by Gemini) to validate the payload
 5. **Response**: Returns 400 if validation fails, otherwise continues to next middleware
@@ -111,7 +113,7 @@ npx ts-node --esm examples/x402-integration.ts
 
 The smart layer is designed to work seamlessly with `@x402/express` middleware. Apply the smart layer **before** x402 payment middleware to validate payloads before processing payments.
 
-**Important**: The smart layer only processes requests with `X-PAYMENT` or `PAYMENT-SIGNATURE` headers, making it perfect for protecting x402 endpoints.
+**Important**: The smart layer validates request payloads when a request body is present, regardless of payment headers. This ensures payload validation happens **before** payment processing, catching invalid requests early and preventing unnecessary payment processing.
 
 See [`examples/x402-integration.ts`](./examples/x402-integration.ts) for a complete example showing:
 - x402 resource server setup

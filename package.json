@@ -52,7 +52,7 @@
   },
   "peerDependencies": {
     "express": "^4.18.0",
-    "@x402/express": "^0.1.0"
+    "@x402/express": "^2.2.0"
   },
   "engines": {
     "node": ">=18.0.0"

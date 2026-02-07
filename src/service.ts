@@ -1,5 +1,12 @@
 import type { ValidationResult } from './types/index.js';
 
+// Console is available in Node.js runtime
+declare const console: {
+  log: (...args: any[]) => void;
+  error?: (...args: any[]) => void;
+  debug?: (...args: any[]) => void;
+};
+
 const API_BASE_URL = 'https://api.xona-agent.com';
 
 /**
@@ -52,18 +59,33 @@ function generateRulesFromExpectedRequest(expectedRequest: Record<string, any>):
  */
 export async function validatePayload(
   rules: Record<string, string>,
-  payload: Record<string, any>
+  payload: Record<string, any>,
+  debug: boolean = false
 ): Promise<ValidationResult> {
+  if (debug) {
+    console.log(`[x402-smart-layer] Calling validation API with rules:`, JSON.stringify(rules, null, 2));
+  }
+
+  const requestBody = {
+    rules,
+    payload,
+  };
+
+  if (debug) {
+    console.log(`[x402-smart-layer] API request body:`, JSON.stringify(requestBody, null, 2));
+  }
+
   const response = await fetch(`${API_BASE_URL}/x402-smart-layer`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      rules,
-      payload,
-    }),
+    body: JSON.stringify(requestBody),
   });
+
+  if (debug) {
+    console.log(`[x402-smart-layer] API response status: ${response.status}`);
+  }
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -74,10 +96,16 @@ export async function validatePayload(
     } catch {
       errorMessage = errorText || errorMessage;
     }
+    if (debug) {
+      console.log(`[x402-smart-layer] API error:`, errorMessage);
+    }
     throw new Error(errorMessage);
   }
 
-  const result: ValidationResult = await response.json();
+  const result = await response.json() as ValidationResult;
+  if (debug) {
+    console.log(`[x402-smart-layer] API response:`, JSON.stringify(result, null, 2));
+  }
   return result;
 }
 
@@ -86,8 +114,12 @@ export async function validatePayload(
  */
 export async function validateRequest(
   expectedRequest: Record<string, any>,
-  payload: Record<string, any>
+  payload: Record<string, any>,
+  debug: boolean = false
 ): Promise<ValidationResult> {
   const rules = generateRulesFromExpectedRequest(expectedRequest);
-  return validatePayload(rules, payload);
+  if (debug) {
+    console.log(`[x402-smart-layer] Generated rules from expected request:`, JSON.stringify(rules, null, 2));
+  }
+  return validatePayload(rules, payload, debug);
 }

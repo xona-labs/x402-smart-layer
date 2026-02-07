@@ -19,6 +19,12 @@ export interface SmartLayerConfig {
    * Value is the endpoint configuration
    */
   endpoints: Record<string, EndpointConfig>;
+  /**
+   * Enable debug logging
+   * When true, logs detailed information about validation process
+   * @default false
+   */
+  debug?: boolean;
 }
 
 /**
